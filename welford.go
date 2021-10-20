@@ -16,6 +16,7 @@ type Stats struct {
 }
 
 // New returns a new Welford's algorithm stats.
+// The stats are initialized to zero.
 func New() *Stats {
 	return &Stats{}
 }
