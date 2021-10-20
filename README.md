@@ -10,6 +10,8 @@ Highlights:
 > A method of improved efficiency is given for updating the mean and variance of weighted sampled data when an additional data value is included in the set. Evidence is presented 
 > that the method is stable and at least as accurate as the best existing updating method.
 
+- [Updating mean and variance estimates: an improved method - D. H. D. West](https://dl.acm.org/doi/10.1145/359146.359153)
+
 ## Example Usage
 
 ```go
