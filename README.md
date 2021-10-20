@@ -1,3 +1,4 @@
+[![GoDoc](https://godoc.org/github.com/axiomhq/welford?status.svg)](https://godoc.org/github.com/axiomhq/welford)
 # Welford - Online method of calculating variance and standard deviation
 Go implementation Welford’s method for one-pass variance computation with D. H. D. West improved methods.
 
