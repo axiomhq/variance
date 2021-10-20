@@ -7,7 +7,7 @@ import (
 )
 
 // Welford's algorithm for computing the mean and variance.
-type Sketch struct {
+type Stats struct {
 	n    uint
 	mean float64
 	sum  float64
@@ -15,108 +15,108 @@ type Sketch struct {
 	s    float64
 }
 
-// NewSketch returns a new Welford's algorithm sketch.
-func New() *Sketch {
-	return &Sketch{}
+// New returns a new Welford's algorithm stats.
+func New() *Stats {
+	return &Stats{}
 }
 
-// Add a new value to the sketch.
-func (sk *Sketch) Add(x float64) {
-	sk.AddWeighted(x, 1)
+// Add a new value to the Stats.
+func (sts *Stats) Add(x float64) {
+	sts.AddWeighted(x, 1)
 }
 
-// Add a new weighted value to the sketch.
-func (sk *Sketch) AddWeighted(val, weight float64) {
-	sk.n++
-	sk.sum += weight
-	sk.sum2 += weight * weight
-	meanOld := sk.mean
-	sk.mean = meanOld + (weight/sk.sum)*(val-meanOld)
-	sk.s = sk.s + weight*(val-meanOld)*(val-sk.mean)
+// Add a new weighted value to the Stats.
+func (sts *Stats) AddWeighted(val, weight float64) {
+	sts.n++
+	sts.sum += weight
+	sts.sum2 += weight * weight
+	meanOld := sts.mean
+	sts.mean = meanOld + (weight/sts.sum)*(val-meanOld)
+	sts.s = sts.s + weight*(val-meanOld)*(val-sts.mean)
 }
 
-// Clear resets the sketch to its initial state.
-func (sk *Sketch) Clear() {
-	sk.n = 0
-	sk.s = 0
-	sk.sum = 0
-	sk.sum2 = 0
-	sk.mean = 0
+// Clear resets the Stats to its initial state.
+func (sts *Stats) Clear() {
+	sts.n = 0
+	sts.s = 0
+	sts.sum = 0
+	sts.sum2 = 0
+	sts.mean = 0
 }
 
 // Mean returns the mean of the data.
-func (sk *Sketch) Mean() float64 {
-	return sk.mean
+func (sts *Stats) Mean() float64 {
+	return sts.mean
 }
 
 // VariancePopulation returns the variance of the data, assuming the data added was not sampled.
-func (sk *Sketch) VariancePopulation() float64 {
-	return sk.s / sk.sum
+func (sts *Stats) VariancePopulation() float64 {
+	return sts.s / sts.sum
 }
 
 // Variance returns the variance of the data, assuming the data added was sampled.
-func (sk *Sketch) Variance() float64 {
-	return sk.s / (sk.sum - 1)
+func (sts *Stats) Variance() float64 {
+	return sts.s / (sts.sum - 1)
 }
 
 // Standard deviation is the square root of the variance.
-func (sk *Sketch) StandardDeviationPopulation() float64 {
-	return math.Sqrt(sk.VariancePopulation())
+func (sts *Stats) StandardDeviationPopulation() float64 {
+	return math.Sqrt(sts.VariancePopulation())
 }
 
 // Standard deviation is the square root of the variance.
-func (sk *Sketch) StandardDeviation() float64 {
-	return math.Sqrt(sk.Variance())
+func (sts *Stats) StandardDeviation() float64 {
+	return math.Sqrt(sts.Variance())
 }
 
-// NumDataValues returns the number of data values in the sketch.
-func (sk *Sketch) NumDataValues() uint {
-	return sk.n
+// NumDataValues returns the number of data values in the Stats.
+func (sts *Stats) NumDataValues() uint {
+	return sts.n
 }
 
-// Clone returns a copy of the sketch.
-func (sk *Sketch) Clone() *Sketch {
-	return &Sketch{
-		n:    sk.n,
-		mean: sk.mean,
-		sum:  sk.sum,
-		sum2: sk.sum2,
-		s:    sk.s,
+// Clone returns a copy of the Stats.
+func (sts *Stats) Clone() *Stats {
+	return &Stats{
+		n:    sts.n,
+		mean: sts.mean,
+		sum:  sts.sum,
+		sum2: sts.sum2,
+		s:    sts.s,
 	}
 }
 
-// Merge `other` sketch into the receiver.
-func (sk *Sketch) Merge(other Sketch) {
-	sk.n += other.n
-	sk.sum += other.sum
-	sk.sum2 += other.sum2
-	meanOld := sk.mean
-	sk.mean = meanOld + (other.sum/sk.sum)*(other.mean-meanOld)
-	sk.s = sk.s + other.s + other.sum*(other.mean-meanOld)*(other.mean-sk.mean)
+// Merge `other` Stats into the receiver.
+func (sts *Stats) Merge(other Stats) {
+	sts.n += other.n
+	sts.sum += other.sum
+	sts.sum2 += other.sum2
+	meanOld := sts.mean
+	sts.mean = meanOld + (other.sum/sts.sum)*(other.mean-meanOld)
+	sts.s = sts.s + other.s + other.sum*(other.mean-meanOld)*(other.mean-sts.mean)
 }
 
-// WriteTo writes the sketch to `w`.
-func (sk *Sketch) WriteTo(w io.Writer) (int64, error) {
-	if err := binary.Write(w, binary.BigEndian, uint64(sk.n)); err != nil {
+// WriteTo writes the Stats to `w`.
+func (sts *Stats) WriteTo(w io.Writer) (int64, error) {
+	if err := binary.Write(w, binary.BigEndian, uint64(sts.n)); err != nil {
 		return 0, err
 	}
-	if err := binary.Write(w, binary.BigEndian, sk.mean); err != nil {
+	if err := binary.Write(w, binary.BigEndian, sts.mean); err != nil {
 		return 8, err
 	}
-	if err := binary.Write(w, binary.BigEndian, sk.sum); err != nil {
+	if err := binary.Write(w, binary.BigEndian, sts.sum); err != nil {
 		return 16, err
 	}
-	if err := binary.Write(w, binary.BigEndian, sk.sum2); err != nil {
+	if err := binary.Write(w, binary.BigEndian, sts.sum2); err != nil {
 		return 24, err
 	}
-	if err := binary.Write(w, binary.BigEndian, sk.s); err != nil {
+	if err := binary.Write(w, binary.BigEndian, sts.s); err != nil {
 		return 32, err
 	}
 	return 40, nil
 }
 
-// ReadFrom reads the sketch from `r`.
-func (sk *Sketch) ReadFrom(r io.Reader) (int64, error) {
+// ReadFrom reads the Stats from `r`.
+func (sts *Stats) ReadFrom(r io.Reader) (int64, error) {
 	var (
 		n                  uint64
 		mean, sum, sum2, s float64
@@ -137,10 +137,10 @@ func (sk *Sketch) ReadFrom(r io.Reader) (int64, error) {
 	if err = binary.Read(r, binary.BigEndian, &s); err != nil {
 		return 32, err
 	}
-	sk.n = uint(n)
-	sk.mean = mean
-	sk.sum = sum
-	sk.sum2 = sum2
-	sk.s = s
+	sts.n = uint(n)
+	sts.mean = mean
+	sts.sum = sum
+	sts.sum2 = sum2
+	sts.s = s
 	return 40, nil
 }

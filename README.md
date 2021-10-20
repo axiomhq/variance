@@ -1,5 +1,9 @@
-# welford
-Go implementation Welford’s method for one-pass variance computation with D. H. D. West improved method
+# Welford - Online/Rolling method of calculating variance and standard deviation
+Go implementation Welford’s method for one-pass variance computation with D. H. D. West improved methods.
+
+Highlights:
+* Merging of several multiple sets of statistics
+* Add weighted values
 
 ## Abstract
 
@@ -10,13 +14,13 @@ Go implementation Welford’s method for one-pass variance computation with D. H
 
 ```go
 
-sk1 := welford.New()
-sk1.Add(1)
-sk1.Add(1)
-sk1.Add(1)
-sk1.Add(0)
-sk1.Add(0)
-sk1.Add(0)
+sts1 := welford.New()
+sts1.Add(1)
+sts1.Add(1)
+sts1.Add(1)
+sts1.Add(0)
+sts1.Add(0)
+sts1.Add(0)
 
 mean := s.Mean() // ==> 0.5
 variance := s.Variance() // ==> 0.3
@@ -25,10 +29,10 @@ variancp := s.VariancePpopulation()	// ==> 0.25
 stdevp := s.StandardDeviationPopulation() // ==> 0.5
 n := s.NumDataValues()) // 6
 
-sk2 := welford.New()
-sk2.Add(3)
+sts2 := welford.New()
+sts2.Add(3)
 
-sk1.Merge(sk2) // merge sk1 into sk2
+sts1.Merge(sts2) // merge sts1 into sts2
 
-sk2.Clear() // resets the state os sk2
+sts2.Clear() // resets the state os sts2
 ```
