@@ -54,9 +54,9 @@ func (sk *Sketch) VariancePopulation() float64 {
 	return sk.s / sk.sum
 }
 
-// VarianceSample returns the variance of the data, assuming the data added was sampled.
-func (sk *Sketch) VarianceSample() float64 {
-	return sk.s / float64(sk.sum-1)
+// Variance returns the variance of the data, assuming the data added was sampled.
+func (sk *Sketch) Variance() float64 {
+	return sk.s / (sk.sum - 1)
 }
 
 // Standard deviation is the square root of the variance.
@@ -65,8 +65,8 @@ func (sk *Sketch) StandardDeviationPopulation() float64 {
 }
 
 // Standard deviation is the square root of the variance.
-func (sk *Sketch) StandardDeviationSample() float64 {
-	return math.Sqrt(sk.VarianceSample())
+func (sk *Sketch) StandardDeviation() float64 {
+	return math.Sqrt(sk.Variance())
 }
 
 // NumDataValues returns the number of data values in the sketch.
