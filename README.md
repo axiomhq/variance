@@ -29,7 +29,7 @@ variance := s.Variance() // ==> 0.3
 stdev := s.StandardDeviation() // ==> 0.5477225575051661
 variancp := s.VariancePpopulation()	// ==> 0.25
 stdevp := s.StandardDeviationPopulation() // ==> 0.5
-n := s.NumDataValues()) // 6
+n := s.NumDataValues()) // ==> 6
 
 sts2 := welford.New()
 sts2.Add(3)
