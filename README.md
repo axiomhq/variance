@@ -1,4 +1,4 @@
-# Welford - Online/Rolling method of calculating variance and standard deviation
+# Welford - Online method of calculating variance and standard deviation
 Go implementation Welford’s method for one-pass variance computation with D. H. D. West improved methods.
 
 Highlights:
