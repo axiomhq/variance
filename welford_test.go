@@ -38,6 +38,20 @@ func TestWelfordSimple(t *testing.T) {
 	assert.EqualValues(t, 0.9166666666666666, s.VariancePopulation())
 	assert.EqualValues(t, 0.9574271077563381, s.StandardDeviationPopulation())
 	assert.EqualValues(t, 6, s.NumDataValues())
+
+	s.Clear()
+	s.Add(13)
+	s.Add(17)
+	s.Add(18)
+	s.Add(27)
+	s.Add(28)
+
+	assert.EqualValues(t, 20.6, s.Mean())
+	assert.EqualValues(t, 43.3, s.Variance())
+	assert.EqualValues(t, 6.58027355054484, s.StandardDeviation())
+	assert.EqualValues(t, 34.64, s.VariancePopulation())
+	assert.EqualValues(t, 5.885575587824865, s.StandardDeviationPopulation())
+	assert.EqualValues(t, 5, s.NumDataValues())
 }
 
 func TestMomentsSimpleMerge(t *testing.T) {
