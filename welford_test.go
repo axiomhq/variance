@@ -8,115 +8,127 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWelfordSimple(t *testing.T) {
-	s := New()
-	s.Add(1)
-	s.Add(1)
-	s.Add(1)
-	s.Add(0)
-	s.Add(0)
-	s.Add(0)
+func TestStatsSimple(t *testing.T) {
+	suite := assert.New(t)
 
-	assert.EqualValues(t, 0.5, s.Mean())
-	assert.EqualValues(t, 0.3, s.Variance())
-	assert.EqualValues(t, 0.5477225575051661, s.StandardDeviation())
-	assert.EqualValues(t, 0.25, s.VariancePopulation())
-	assert.EqualValues(t, 0.5, s.StandardDeviationPopulation())
-	assert.EqualValues(t, 6, s.NumDataValues())
+	stats := New()
+	stats.Add(1)
+	stats.Add(1)
+	stats.Add(1)
+	stats.Add(0)
+	stats.Add(0)
+	stats.Add(0)
 
-	s.Clear()
-	s.Add(3)
-	s.Add(6)
-	s.Add(4)
-	s.Add(5)
-	s.Add(5)
-	s.Add(4)
+	suite.EqualValues(0.5, stats.Mean())
+	suite.EqualValues(0.3, stats.Variance())
+	suite.EqualValues(0.5477225575051661, stats.StandardDeviation())
+	suite.EqualValues(0.25, stats.VariancePopulation())
+	suite.EqualValues(0.5, stats.StandardDeviationPopulation())
+	suite.EqualValues(6, stats.NumDataValues())
 
-	assert.EqualValues(t, 4.5, s.Mean())
-	assert.EqualValues(t, 1.1, s.Variance())
-	assert.EqualValues(t, 1.0488088481701516, s.StandardDeviation())
-	assert.EqualValues(t, 0.9166666666666666, s.VariancePopulation())
-	assert.EqualValues(t, 0.9574271077563381, s.StandardDeviationPopulation())
-	assert.EqualValues(t, 6, s.NumDataValues())
+	stats.Clear()
+	stats.Add(3)
+	stats.Add(6)
+	stats.Add(4)
+	stats.Add(5)
+	stats.Add(5)
+	stats.Add(4)
 
-	s.Clear()
-	s.Add(13)
-	s.Add(17)
-	s.Add(18)
-	s.Add(27)
-	s.Add(28)
+	suite.EqualValues(4.5, stats.Mean())
+	suite.EqualValues(1.1, stats.Variance())
+	suite.EqualValues(1.0488088481701516, stats.StandardDeviation())
+	suite.EqualValues(0.9166666666666666, stats.VariancePopulation())
+	suite.EqualValues(0.9574271077563381, stats.StandardDeviationPopulation())
+	suite.EqualValues(6, stats.NumDataValues())
 
-	assert.EqualValues(t, 20.6, s.Mean())
-	assert.EqualValues(t, 43.3, s.Variance())
-	assert.EqualValues(t, 6.58027355054484, s.StandardDeviation())
-	assert.EqualValues(t, 34.64, s.VariancePopulation())
-	assert.EqualValues(t, 5.885575587824865, s.StandardDeviationPopulation())
-	assert.EqualValues(t, 5, s.NumDataValues())
+	stats.Clear()
+	stats.Add(13)
+	stats.Add(17)
+	stats.Add(18)
+	stats.Add(27)
+	stats.Add(28)
+
+	suite.EqualValues(20.6, stats.Mean())
+	suite.EqualValues(43.3, stats.Variance())
+	suite.EqualValues(6.58027355054484, stats.StandardDeviation())
+	suite.EqualValues(34.64, stats.VariancePopulation())
+	suite.EqualValues(5.885575587824865, stats.StandardDeviationPopulation())
+	suite.EqualValues(5, stats.NumDataValues())
 }
 
-func TestMomentsSimpleMerge(t *testing.T) {
+func TestStats_Merge(t *testing.T) {
+	suite := assert.New(t)
+
 	var (
-		sTotal = New()
-		s1     = New()
-		s2     = New()
+		statsTotal = New()
+		stats1     = New()
+		stats2     = New()
 	)
 
 	for i := 0; i < 100; i++ {
 		if i%2 == 0 {
-			s1.Add(float64(i))
+			stats1.Add(float64(i))
 		} else {
-			s2.Add(float64(i))
+			stats2.Add(float64(i))
 		}
-		sTotal.Add(float64(i))
+		statsTotal.Add(float64(i))
 	}
 
-	s1.Merge(*s2)
-	assert.EqualValues(t, sTotal.Mean(), s1.Mean())
-	assert.EqualValues(t, sTotal.Variance(), s1.Variance())
+	stats1.Merge(stats2)
+	suite.EqualValues(statsTotal.Mean(), stats1.Mean())
+	suite.EqualValues(statsTotal.Variance(), stats1.Variance())
 
-	s1.Add(5555)
-	sTotal.Add(5555)
+	stats1.Add(5555)
+	statsTotal.Add(5555)
 
-	assert.EqualValues(t, sTotal.Mean(), s1.Mean())
-	assert.EqualValues(t, sTotal.Variance(), s1.Variance())
+	suite.EqualValues(statsTotal.Mean(), stats1.Mean())
+	suite.EqualValues(statsTotal.Variance(), stats1.Variance())
 }
 
-func TestMomentsNumDataValues(t *testing.T) {
-	s := New()
-	num := rand.Intn(100)
+func TestStats_NumDataValues(t *testing.T) {
+	stats := New()
+	num := rand.Intn(100) //nolint:gosec // Fine for testing
+
 	for i := 0; i < num; i++ {
-		s.Add(1)
+		stats.Add(1)
 	}
-	assert.EqualValues(t, num, s.NumDataValues())
+
+	assert.EqualValues(t, num, stats.NumDataValues())
 }
 
-func TestMomentsRandomFloats(t *testing.T) {
-	s := New()
+func TestStatsWithRandomFloats(t *testing.T) {
+	suite := assert.New(t)
+
+	stats := New()
+
 	for i := 0; i < 1000000; i++ {
-		s.Add(rand.NormFloat64())
+		stats.Add(rand.NormFloat64())
 	}
+
 	// Allow .1% of error (.1% arbitrarily chosen)
-	assert.InDelta(t, 0.0, s.Mean(), 0.001)
-	assert.InDelta(t, 1.0, s.Variance(), 0.001)
-	assert.InDelta(t, 1.0, s.StandardDeviation(), 0.001)
+	suite.InDelta(0.0, stats.Mean(), 0.001)
+	suite.InDelta(1.0, stats.Variance(), 0.001)
+	suite.InDelta(1.0, stats.StandardDeviation(), 0.001)
 }
 
-func TestMomentsEncodeDecode(t *testing.T) {
+func TestStatsWriteToReadFrom(t *testing.T) {
+	suite := assert.New(t)
+
 	exp := New()
 	exp.Add(1)
 	exp.Add(2)
 	exp.Add(3)
 
-	p := bytes.NewBuffer(nil)
+	var buf bytes.Buffer
 
-	n, err := exp.WriteTo(p)
-	assert.NoError(t, err)
-	assert.EqualValues(t, 40, n)
+	n, err := exp.WriteTo(&buf)
+	suite.NoError(err)
+	suite.EqualValues(40, n)
 
 	got := New()
-	n, err = got.ReadFrom(p)
+	n, err = got.ReadFrom(&buf)
+	suite.NoError(err)
+	suite.EqualValues(40, n)
 
-	assert.NoError(t, err)
-	assert.EqualValues(t, 40, n)
-	assert.EqualValues(t, exp, got)
+	suite.EqualValues(exp, got)
 }

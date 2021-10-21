@@ -1,0 +1,28 @@
+project_name: welford
+
+builds:
+  - skip: true
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+milestones:
+  - repo:
+      owner: axiomhq
+      name: welford
+    close: true
+    fail_on_error: false
+
+release:
+  github:
+    owner: axiomhq
+    name: welford
+  prerelease: auto
+  name_template: "Welford v{{.Version}}"
