@@ -1,6 +1,4 @@
-# Welford
-
-> Online method of calculating variance and standard deviation
+# Welford - running variance and standard deviation caluculation
 
 [![Go Reference][gopkg_badge]][gopkg]
 [![Go Workflow][go_workflow_badge]][go_workflow]
@@ -14,7 +12,7 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-1. [Installation](#Installation)
+1. [Installation](#installation)
 1. [Usage](#usage)
 1. [Contributing](#contributing)
 1. [License](#license)
