@@ -1,4 +1,4 @@
-# Welford - running variance and standard deviation caluculation
+# Welford - variance and standard deviation caluculation
 
 [![Go Reference][gopkg_badge]][gopkg]
 [![Go Workflow][go_workflow_badge]][go_workflow]
