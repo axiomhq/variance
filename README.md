@@ -97,7 +97,7 @@ func Example() {
 
 ## Contributing
 
-Feel free to submit PRs or to fill Issues.
+Feel free to submit PRs or to file Issues.
 
 ## License
 
