@@ -1,4 +1,4 @@
-# Welford - variance and standard deviation caluculation
+# Variance and standard deviation caluculation using variance's algorithm
 
 [![Go Reference][gopkg_badge]][gopkg]
 [![Go Workflow][go_workflow_badge]][go_workflow]
@@ -19,7 +19,7 @@
 
 ## Introduction
 
-Go implementation of Welford’s method for one-pass variance computation with
+Go implementation of variance’s method for one-pass variance computation with
 D. H. D. West improved methods.
 
 ### Highlights
@@ -41,30 +41,30 @@ D. H. D. West improved methods.
 ### Install using `go get`
 
 ```shell
-go get github.com/axiomhq/welford
+go get github.com/axiomhq/variance
 ```
 
 ### Install from source
 
 ```shell
-git clone https://github.com/axiomhq/welford.git
-cd welford
+git clone https://github.com/axiomhq/variance.git
+cd variance
 make # Run code generators, linters, sanitizers and test suits
 ```
 
 ## Usage
 
 ```go
-package welford_test
+package variance_test
 
 import (
 	"fmt"
 
-	"github.com/axiomhq/welford"
+	"github.com/axiomhq/variance"
 )
 
 func Example() {
-	stats1 := welford.New()
+	stats1 := variance.New()
 
 	stats1.Add(1)
 	stats1.Add(1)
@@ -82,7 +82,7 @@ func Example() {
 		stats1.NumDataValues(),
 	)
 
-	stats2 := welford.New()
+	stats2 := variance.New()
 	stats2.Add(3)
 
 	// Merge the values of stats2 into stats1.
@@ -109,15 +109,15 @@ See [LICENSE](LICENSE) for more information.
 
 <!-- Badges -->
 
-[gopkg]: https://pkg.go.dev/github.com/axiomhq/welford
+[gopkg]: https://pkg.go.dev/github.com/axiomhq/variance
 [gopkg_badge]: https://img.shields.io/badge/doc-reference-007d9c?logo=go&logoColor=white&style=flat-square
-[go_workflow]: https://github.com/axiomhq/welford/actions/workflows/push.yml
-[go_workflow_badge]: https://img.shields.io/github/workflow/status/axiomhq/welford/Push?style=flat-square&ghcache=unused
-[coverage]: https://codecov.io/gh/axiomhq/welford
-[coverage_badge]: https://img.shields.io/codecov/c/github/axiomhq/welford.svg?style=flat-square&ghcache=unused
-[report]: https://goreportcard.com/report/github.com/axiomhq/welford
-[report_badge]: https://goreportcard.com/badge/github.com/axiomhq/welford?style=flat-square&ghcache=unused
-[release]: https://github.com/axiomhq/welford/releases/latest
-[release_badge]: https://img.shields.io/github/release/axiomhq/welford.svg?style=flat-square&ghcache=unused
+[go_workflow]: https://github.com/axiomhq/variance/actions/workflows/push.yml
+[go_workflow_badge]: https://img.shields.io/github/workflow/status/axiomhq/variance/Push?style=flat-square&ghcache=unused
+[coverage]: https://codecov.io/gh/axiomhq/variance
+[coverage_badge]: https://img.shields.io/codecov/c/github/axiomhq/variance.svg?style=flat-square&ghcache=unused
+[report]: https://goreportcard.com/report/github.com/axiomhq/variance
+[report_badge]: https://goreportcard.com/badge/github.com/axiomhq/variance?style=flat-square&ghcache=unused
+[release]: https://github.com/axiomhq/variance/releases/latest
+[release_badge]: https://img.shields.io/github/release/axiomhq/variance.svg?style=flat-square&ghcache=unused
 [license]: https://opensource.org/licenses/MIT
-[license_badge]: https://img.shields.io/github/license/axiomhq/welford.svg?color=blue&style=flat-square&ghcache=unused
+[license_badge]: https://img.shields.io/github/license/axiomhq/variance.svg?color=blue&style=flat-square&ghcache=unused

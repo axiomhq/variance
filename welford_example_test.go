@@ -1,13 +1,13 @@
-package welford_test
+package variance_test
 
 import (
 	"fmt"
 
-	"github.com/axiomhq/welford"
+	"github.com/axiomhq/variance"
 )
 
 func Example() {
-	stats1 := welford.New()
+	stats1 := variance.New()
 
 	stats1.Add(1)
 	stats1.Add(1)
@@ -25,7 +25,7 @@ func Example() {
 		stats1.NumDataValues(),
 	)
 
-	stats2 := welford.New()
+	stats2 := variance.New()
 	stats2.Add(3)
 
 	// Merge the values of stats2 into stats1.

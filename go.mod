@@ -1,4 +1,4 @@
-module github.com/axiomhq/welford
+module github.com/axiomhq/variance
 
 go 1.17
 
