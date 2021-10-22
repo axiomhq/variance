@@ -1,4 +1,4 @@
-package welford
+package variance
 
 import (
 	"encoding/binary"

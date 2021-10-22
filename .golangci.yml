@@ -43,7 +43,7 @@ linters-settings:
   gofmt:
     simplify: true
   goimports:
-    local-prefixes: github.com/axiomhq/welford
+    local-prefixes: github.com/axiomhq/variance
   govet:
     check-shadowing: true
   nolintlint:

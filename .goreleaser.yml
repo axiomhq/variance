@@ -1,4 +1,4 @@
-project_name: welford
+project_name: variance
 
 builds:
   - skip: true
@@ -16,13 +16,13 @@ changelog:
 milestones:
   - repo:
       owner: axiomhq
-      name: welford
+      name: variance
     close: true
     fail_on_error: false
 
 release:
   github:
     owner: axiomhq
-    name: welford
+    name: variance
   prerelease: auto
-  name_template: "Welford v{{.Version}}"
+  name_template: "Variance v{{.Version}}"
