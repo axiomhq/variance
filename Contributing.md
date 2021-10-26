@@ -1,6 +1,6 @@
 ## How to Contribute
 
-👍🎉 First of all, thank you for your interest in Axiom-node! We'd love to accept your patches and contributions! 🎉👍
+👍🎉 First of all, thank you for your interest in Axiom- Welford’s method for one-pass variance computation. We'd love to accept your patches and contributions! 🎉👍
 
 This project accepts contributions. In order to contribute, you should pay attention to a few guidelines:
 
