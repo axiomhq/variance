@@ -97,7 +97,7 @@ func Example() {
 
 ## Contributing
 
-Feel free to submit PRs or to fill Issues.
+Feel free to submit PRs or to fill issues. Every kind of help is appreciated. Before committing, `make` should run without any issues. Kindly check our [Contributing](Contributing.md) guide on how to propose bug fixes and improvements, and submitting pull requests to the project.
 
 ## License
 
