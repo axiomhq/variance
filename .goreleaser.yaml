@@ -7,11 +7,7 @@ snapshot:
   name_template: "{{ .Tag }}-next"
 
 changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+  use: github-native
 
 milestones:
   - repo:
@@ -23,6 +19,6 @@ milestones:
 release:
   github:
     owner: axiomhq
-    name: variance
+    name: axiom-go
   prerelease: auto
   name_template: "Variance v{{.Version}}"
