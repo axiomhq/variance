@@ -29,44 +29,37 @@ endif
 
 # FUNCTIONS
 # func go-run-tool(name)
-go-run-tool = $(CGO) run -mod=mod $(shell echo $(GOTOOLS) | tr ' ' '\n' | grep -w $1)
+go-run-tool = $(CGO) run $(shell echo $(GOTOOLS) | tr ' ' '\n' | grep -w $1)
 
 .PHONY: all
-all: ## Run dep, fmt, lint and test
-all: dep fmt lint test
+all: dep fmt lint test ## Run dep, fmt, lint and test
 
 .PHONY: clean
 clean: ## Remove build and test artifacts
-clean:
 	@echo ">> cleaning up artifacts"
 	@rm -rf $(COVERPROFILE) dep.stamp
 
 .PHONY: coverage
-coverage: ## Calculate the code coverage score
-coverage: $(COVERPROFILE)
+coverage: $(COVERPROFILE) ## Calculate the code coverage score
 	@echo ">> calculating code coverage"
 	@$(GO) tool cover -func=$(COVERPROFILE) | grep total | awk '{print $$3}'
 
 .PHONY: dep-clean
 dep-clean: ## Remove obsolete dependencies
-dep-clean:
 	@echo ">> cleaning dependencies"
 	@$(GO) mod tidy
 
 .PHONY: dep-upgrade
 dep-upgrade: ## Upgrade all direct dependencies to their latest version
-dep-upgrade:
 	@echo ">> upgrading dependencies"
 	@$(GO) get -d $(shell $(GO) list -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)
 	@make dep
 
 .PHONY: dep-upgrade-tools
-dep-upgrade-tools: ## Upgrade all tool dependencies to their latest version
-dep-upgrade-tools: $(GOTOOLS)
+dep-upgrade-tools: $(GOTOOLS) ## Upgrade all tool dependencies to their latest version
 
 .PHONY: dep
-dep: ## Install and verify dependencies and remove obsolete ones
-dep: dep-clean dep.stamp
+dep: dep-clean dep.stamp ## Install and verify dependencies and remove obsolete ones
 
 dep.stamp: $(GOMODDEPS)
 	@echo ">> installing dependencies"
@@ -76,19 +69,16 @@ dep.stamp: $(GOMODDEPS)
 
 .PHONY: fmt
 fmt: ## Format and simplify the source code using `gofmt`
-fmt:
 	@echo ">> formatting code"
 	@! $(GOFMT) -s -w $(shell find . -path -prune -o -name '*.go' -print) | grep '^'
 
 .PHONY: lint
 lint: ## Lint the source code
-lint:
 	@echo ">> linting code"
 	@$(call go-run-tool, golangci-lint) run
 
 .PHONY: test
 test: ## Run all unit tests. Run with VERBOSE=1 to get verbose test output ('-v' flag).
-test:
 	@echo ">> running tests"
 	@$(call go-run-tool, gotestsum) $(GOTESTSUM_FLAGS) -- $(GO_TEST_FLAGS) ./...
 

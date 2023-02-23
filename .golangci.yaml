@@ -5,14 +5,11 @@ run:
     - .github
     - .vscode
     - dist
-  build-tags:
-    - integration
 
 linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - dogsled
     - dupl
     - errcheck
@@ -30,13 +27,11 @@ linters:
     - prealloc
     - revive
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
 
 linters-settings:
@@ -51,3 +46,7 @@ linters-settings:
     allow-leading-space: false
     require-explanation: true
     require-specific: true
+  staticcheck:
+    checks:
+      - all
+      - "-SA1019"
