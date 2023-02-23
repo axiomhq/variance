@@ -19,6 +19,6 @@ milestones:
 release:
   github:
     owner: axiomhq
-    name: axiom-go
+    name: variance
   prerelease: auto
   name_template: "Variance v{{.Version}}"
