@@ -8,11 +8,40 @@
 # Test binary, built with `go test -c`
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
+# Output of the go coverage tool
 *.out
+coverage.out
+coverage.txt
+coverage.html
 
 # Build artifacts
-dist
+dist/
+bin/
 
 # Go mod timestamp for Makefile
-/dep.stamp
+dep.stamp
+
+# Dependency directories
+vendor/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.log

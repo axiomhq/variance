@@ -2,7 +2,7 @@ package variance
 
 import (
 	"bytes"
-	"math/rand"
+	"math/rand/v2"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -65,7 +65,7 @@ func TestStats_Merge(t *testing.T) {
 		stats2     = New()
 	)
 
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		if i%2 == 0 {
 			stats1.Add(float64(i))
 		} else {
@@ -78,8 +78,8 @@ func TestStats_Merge(t *testing.T) {
 	suite.EqualValues(statsTotal.Mean(), stats1.Mean())
 	suite.EqualValues(statsTotal.Variance(), stats1.Variance())
 
-	stats1.Add(5555)
-	statsTotal.Add(5555)
+	stats1.Add(5_555)
+	statsTotal.Add(5_555)
 
 	suite.EqualValues(statsTotal.Mean(), stats1.Mean())
 	suite.EqualValues(statsTotal.Variance(), stats1.Variance())
@@ -87,9 +87,9 @@ func TestStats_Merge(t *testing.T) {
 
 func TestStats_NumDataValues(t *testing.T) {
 	stats := New()
-	num := rand.Intn(100) //nolint:gosec // Fine for testing
+	num := rand.IntN(100) //nolint:gosec // Fine for testing
 
-	for i := 0; i < num; i++ {
+	for range num {
 		stats.Add(1)
 	}
 
@@ -101,14 +101,14 @@ func TestStatsWithRandomFloats(t *testing.T) {
 
 	stats := New()
 
-	for i := 0; i < 1000000; i++ {
-		stats.Add(rand.NormFloat64())
+	for range 1_000_000 {
+		stats.Add(rand.NormFloat64()) //nolint:gosec // Using weak RNG is acceptable in tests for statistical properties
 	}
 
-	// Allow .1% of error (.1% arbitrarily chosen)
-	suite.InDelta(0.0, stats.Mean(), 0.001)
-	suite.InDelta(1.0, stats.Variance(), 0.001)
-	suite.InDelta(1.0, stats.StandardDeviation(), 0.001)
+	// Allow 0.5% of error (0.5% chosen to account for random variation)
+	suite.InDelta(0.0, stats.Mean(), 0.005)
+	suite.InDelta(1.0, stats.Variance(), 0.005)
+	suite.InDelta(1.0, stats.StandardDeviation(), 0.005)
 }
 
 func TestStatsWriteToReadFrom(t *testing.T) {

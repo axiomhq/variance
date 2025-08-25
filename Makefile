@@ -1,13 +1,9 @@
 # TOOLCHAIN
 GO	  := CGO_ENABLED=0 go
 CGO	  := CGO_ENABLED=1 go
-GOFMT := $(GO)fmt
 
 # ENVIRONMENT
 VERBOSE =
-
-# GO TOOLS
-GOTOOLS := $(shell cat tools.go | grep "_ \"" | awk '{ print $$2 }' | tr -d '"')
 
 # MISC
 COVERPROFILE := coverage.out
@@ -26,10 +22,6 @@ GOTESTSUM_FLAGS =
 ifdef VERBOSE
 	GOTESTSUM_FLAGS += --format=standard-verbose
 endif
-
-# FUNCTIONS
-# func go-run-tool(name)
-go-run-tool = $(CGO) run $(shell echo $(GOTOOLS) | tr ' ' '\n' | grep -w $1)
 
 .PHONY: all
 all: dep fmt lint test ## Run dep, fmt, lint and test
@@ -52,11 +44,8 @@ dep-clean: ## Remove obsolete dependencies
 .PHONY: dep-upgrade
 dep-upgrade: ## Upgrade all direct dependencies to their latest version
 	@echo ">> upgrading dependencies"
-	@$(GO) get -d $(shell $(GO) list -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)
-	@make dep
-
-.PHONY: dep-upgrade-tools
-dep-upgrade-tools: $(GOTOOLS) ## Upgrade all tool dependencies to their latest version
+	@$(GO) get $(shell $(GO) list -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all) $(shell $(GO) list tool)
+	@$(MAKE) dep
 
 .PHONY: dep
 dep: dep-clean dep.stamp ## Install and verify dependencies and remove obsolete ones
@@ -68,19 +57,19 @@ dep.stamp: $(GOMODDEPS)
 	@touch $@
 
 .PHONY: fmt
-fmt: ## Format and simplify the source code using `gofmt`
+fmt: ## Format and simplify the source code using `golangci-lint fmt`
 	@echo ">> formatting code"
-	@! $(GOFMT) -s -w $(shell find . -path -prune -o -name '*.go' -print) | grep '^'
+	@$(GO) tool golangci-lint fmt
 
 .PHONY: lint
 lint: ## Lint the source code
 	@echo ">> linting code"
-	@$(call go-run-tool, golangci-lint) run
+	@$(GO) tool golangci-lint run
 
 .PHONY: test
 test: ## Run all unit tests. Run with VERBOSE=1 to get verbose test output ('-v' flag).
 	@echo ">> running tests"
-	@$(call go-run-tool, gotestsum) $(GOTESTSUM_FLAGS) -- $(GO_TEST_FLAGS) ./...
+	@$(CGO) tool gotestsum $(GOTESTSUM_FLAGS) -- $(GO_TEST_FLAGS) ./...
 
 .PHONY: help
 help:
@@ -89,4 +78,4 @@ help:
 # MISC TARGETS
 
 $(COVERPROFILE):
-	@make test
+	@$(MAKE) test
