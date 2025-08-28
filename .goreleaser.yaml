@@ -10,6 +10,14 @@ snapshot:
 
 changelog:
   use: github-native
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - Merge pull request
+      - Merge branch
 
 milestones:
   - repo:
@@ -24,3 +32,5 @@ release:
     name: variance
   prerelease: auto
   name_template: "Variance v{{ .Version }}"
+  footer: |
+    **Full Changelog**: https://github.com/axiomhq/variance/compare/{{ .PreviousTag }}...{{ .Tag }}

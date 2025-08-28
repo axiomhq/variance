@@ -1,47 +1,44 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# macOS
+.DS_Store
 
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool
-*.out
-coverage.out
-coverage.txt
-coverage.html
-
-# Build artifacts
-dist/
-bin/
-
-# Go mod timestamp for Makefile
-dep.stamp
-
-# Dependency directories
-vendor/
-
-# IDE files
-.idea/
+# Linux
 *.swp
 *.swo
 *~
+
+# IDE
 .vscode/
+.idea/
 *.iml
 
-# OS files
-.DS_Store
-Thumbs.db
+# Build and test artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+coverage.txt
+*.prof
+*.coverprofile
+vendor/
+dist/
+dep.stamp
 
-# Environment files
-.env
-.env.local
+# Go workspace files
+go.work
+go.work.sum
 
 # Temporary files
 *.tmp
 *.bak
 *.backup
 *.log
+
+# Jujutsu
+.jj/
+
+# GoReleaser
+/dist/
