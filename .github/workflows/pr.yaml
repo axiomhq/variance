@@ -17,7 +17,6 @@ jobs:
     strategy:
       matrix:
         go:
-          - "1.24"
           - "1.25"
     steps:
       - uses: actions/checkout@v6
@@ -38,7 +37,6 @@ jobs:
     strategy:
       matrix:
         go:
-          - "1.24"
           - "1.25"
     steps:
       - uses: actions/checkout@v6
